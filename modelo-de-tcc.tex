@@ -1,0 +1,220 @@
+%%Modelo de TCC da UFVJM
+%%Este modelo segue a Resolução no. 15 do CONSEPE, de 21 de Maio de 2010. 
+%%LEIA a Resolução!
+%%Vide: http://www.ufvjm.edu.br/prograd/tcc.html
+%%----
+%%Configuração Padrão
+%%a4paper - (Tamanho do papel: A4)
+%%12pt - (Tamanho da fonte: 12pt)
+%%twoside - (Impressão frente e verso)
+%%openright - Todos os capítulos começam no anverso da folha (coincide com as páginas ímpares).
+%%            Para essa opção funcionar como esperado, você DEVE USAR JUNTO com a opção twoside.
+%%            Se necessário, coloca uma página par em branco para forçar o 
+%%            começo do próximo capítulo em uma página ímpar.
+%%capitulomaiusculo - Fixa em maiúsculo o título de todos os capítulos com numeração (comando \chapter). 
+%%                    O título dos capítulos sem numeração (comando \chapter*) fica em maiúsculo,
+%%                    independente dessa opção.
+%%Obs.: Esse modelo usa o arquivo "tcc-ufvjm.cls". Por praticidade, deixe esse arquivo 
+%%      na mesma pasta que o arquivo principal do seu trabalho.
+\documentclass[a4paper,12pt,twoside,openright,capitulomaiusculo]{tcc-ufvjm}
+
+%%Fonte Times New Roman.
+\usepackage{mathptmx}
+
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+\usepackage{graphicx}
+\usepackage[mathcal]{eucal}
+\usepackage{latexsym}
+\usepackage[brazil]{babel}
+
+%%USE A CODIFICAÇÃO UTF-8 na formatação dos seus arquivos.
+%%MUDE a opção "utf8" caso altere a codificação.
+\usepackage[utf8]{inputenc}
+
+\usepackage{bm}
+\usepackage[all]{xy}
+
+%%Pacote para Gerar o Índice.
+%%Obs.: * O Índice é opcional. Se não quiser utilizar, basta colocar % na frente da linha.
+%%      * Além disso, coloque % na frente da linha que contém \printindex (que está próximo ao fim desse arquivo).
+\usepackage{makeidx}\makeindex
+
+%%Pacote para gerar a referência no padrão ABNT
+%%Página do projeto: http://code.google.com/p/abntex2/
+%%Obs.: * Esse pacote usa os arquivos: abntex2cite.sty, abntex2abrev.sty, abntex2-options.bib,
+%%      abntex2-alf.bst e abntex2-num.bst.
+%%      * Esses arquivos estão na pasta pos-textual/referencias. NÃO TROQUE de pasta esses arquivos, 
+%%      pois caso contrário será necessário editá-los.
+\usepackage[alf]{pos-textual/referencias/abntex2cite}
+
+%-----------------------------------------------------------
+%-----------------------------------------------------------
+\theoremstyle{plain}
+\newtheorem{theorem}{Teorema}[section]
+\newtheorem{axiom}{Axioma}[section]
+\newtheorem{corollary}{Corolário}[section]
+\newtheorem{lemma}{Lema}[section]
+\newtheorem{proposition}{Proposição}[section]
+%-----------------------------------------------------------
+\theoremstyle{definition}
+\newtheorem{definition}{Definição}[section]
+\newtheorem{example}{Exemplo}[section]
+%-----------------------------------------------------------
+\theoremstyle{remark}
+\newtheorem{remark}{Observação}[section]
+%-----------------------------------------------------------
+%-----------------------------------------------------------
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\K}{\mathbb{K}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\id}{\mathbf{1}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\V}{{\cal V}}
+%-----------------------------------------------------------
+\def\ind{\hbox{ ind }}
+%-----------------------------------------------------------
+\begin{document}
+
+%%---- ELEMENTOS PRÉ-TEXTUAIS ----
+
+%%Informações sobre a Instituição.
+\instituicao{Universidade Federal dos Vales do Jequitinhonha e Mucuri}
+\sigla{UFVJM}
+\instituicaoendereco{Campus do Mucuri - Rua do Cruzeiro, n. 01 - Jardim São Paulo - CEP 39803-371.}
+\unidadeacademica{Faculdade de Ciências Sociais Aplicadas e Exatas}
+
+%%Informação sobre o Curso.
+\curso{Licenciatura em Matemática}
+
+%%Local e Ano.
+\cidade{Teófilo Otoni}
+\ano{2014}
+
+%%Título e subtítulo (caso exista).
+\titulo{O título ficará maiúsculo e em negrito:}
+%Subtitulo (Opcional) - Coloque um % na frente da linha abaixo caso não haja subtítulo.
+\subtitulo{e o subtítulo (quando houver) ficará minúsculo, sendo separado do título por dois pontos.}
+
+%%Autor(es)
+%%Obs.: * Para reduzir o número de autores, basta colocar % na frente das linhas correspondentes.
+%%      * Esse modelo suporta no máximo 6 autores. Se seu curso permitir mais, 
+%%        será necessário editar o arquivo "tcc-ufvjm.cls".
+\nomeautorum{Nome do}\sobrenomeautorum{Autor}
+\emailautorum{e-mail@dominio.com.br}
+
+% \nomeautordois{Nome do}\sobrenomeautordois{Autor 2}
+% \emailautordois{e-mail2@dominio.com.br}
+% 
+% \nomeautortres{Nome do}\sobrenomeautortres{Autor 3}
+% \emailautortres{e-mail3@dominio.com.br}
+% 
+% \nomeautorquatro{Nome do}\sobrenomeautorquatro{Autor 4}
+% \emailautorquatro{e-mail4@dominio.com.br}
+% 
+% \nomeautorcinco{Nome do}\sobrenomeautorcinco{Autor 5}
+% \emailautorcinco{e-mail5@dominio.com.br}
+% 
+% \nomeautorseis{Nome do}\sobrenomeautorseis{Autor 6}
+% \emailautorseis{e-mail6@dominio.com.br}
+
+%%Nome do Orientador, 1o. Avaliador e 2o. Avaliador. 
+%%Obs.: * Co-orientador, 3o., 4o. e 5o. Avaliadores são opcionais. Caso não tenha, basta colocar % na frente das linhas correspondentes.
+%%      * Esse modelo suporta no máximo 6 avaliadores (o orientador e mais cinco). Se seu TCC tiver mais, 
+%%        será necessário editar o arquivo "tcc-ufvjm.cls".
+\orientador{Nome do Orientador(a)}
+\ttorientador{Prof. Dr.}
+\instorientador{Instituição}
+
+% \coorientador{Nome do Co-orientador(a)}
+% \ttcoorientador{Prof. Dr.}
+% \instcoorientador{Instituição}
+
+\examinadorum{Nome do Avaliador(a) 1}
+\ttexaminadorum{Prof. Dr.}
+\instexaminadorum{Instituição}
+
+\examinadordois{Nome do Avaliador(a) 2}
+\ttexaminadordois{Prof. Dr.}
+\instexaminadordois{Instituição}
+
+% \examinadortres{Nome do Avaliador(a) 3}
+% \ttexaminadortres{Prof. Dr.}
+% \instexaminadortres{Instituição}
+% 
+% \examinadorquatro{Nome do Avaliador(a) 4}
+% \ttexaminadorquatro{Prof. Dr.}
+% \instexaminadorquatro{Instituição}
+% 
+% \examinadorcinco{Nome do Avaliador(a) 5}
+% \ttexaminadorcinco{Prof. Dr.}
+% \instexaminadorcinco{Instituição}
+
+%%O número CDU será obtido na Biblioteca, depois da versão final do TCC.
+%%Caso não queira gerar a ficha catalográfica, basta colocar % na frente das próximas linhas.
+%%Se a ficha catalográfica não for gerada, no seu lugar haverá uma página em branco (contendo apenas a numeração ii)
+\CDU{xxx.xx} %substitua xxx.xx pelo número informado pela Biblioteca.
+\areas{1. Primeira Área 1; 2. Segunda Área; Terceira Área; Quarta Área 4.} %coloque a(s) área(s) de seu trabalho.
+\npaginas{xx} %substitua xx pelo total de páginas do trabalho 
+%%             Não contabilizar os elementos pré-textuais: capa, folha de rosto, agradecimento, 
+%%             epígrafe, resumo, etc.
+
+%%Errata (Opcional)
+%%Obs.: * A Errata deve aparecer ANTES do comando \maketitle
+%%      * Se não houver Errata, apenas coloque % na frente da próxima linha.
+\include{pre-textual/errata}
+
+%%Gerar: Capa, Folha de Rosto, Errata (caso \errata seja definido), 
+%%       Ficha Catalográfica (caso \CDU seja definido) e Folha de Aprovação.
+\maketitle
+
+\include{pre-textual/dedicatoria} %opcional
+\include{pre-textual/agradecimento} %opcional
+\include{pre-textual/epigrafe} %opcional
+\include{pre-textual/resumo-ptbr} %obrigatório
+\include{pre-textual/resumo-en} %obrigatório
+\listadefiguras %opcional
+\listadetabelas %opcional
+\include{pre-textual/abreviaturas} %opcional
+\include{pre-textual/siglas} %opcional
+\include{pre-textual/simbolos} %opcional
+\sumario %obrigatório
+
+%%---- ELEMENTOS TEXTUAIS ----
+
+\include{capitulos/introducao}
+\include{capitulos/revisao-de-literatura}
+\include{capitulos/metodologia}
+\include{capitulos/resultados}
+\include{capitulos/discussao}
+\include{capitulos/conclusao}
+\include{capitulos/consideracoes-finais}
+
+%%---- ELEMENTOS PÓS-TEXTUAIS ----
+
+%%Referências
+%%Para adicionar referências, você precisa editar o arquivo "referencias.bib" na pasta "pos-textual/referencias".
+\bibliography{pos-textual/referencias/referencias}
+
+%%O Glossário é opcional. Caso não tenha, basta colocar % na frente da próxima linha.
+\include{pos-textual/glossario}
+
+%%O Apêndice é opcional. Caso não tenha, basta colocar % na frente da próxima linha.
+%%Obs.: antes de incluir o Apêndice, você PRECISA colocar o comando \iniciarapendice. 
+\iniciarapendice
+\include{pos-textual/apendice}
+
+%%O Anexo é opcional. Caso não tenha, basta colocar % na frente da próxima linha.
+%%Obs.: antes de incluir o Anexo, você PRECISA colocar o comando \iniciaranexo.
+\iniciaranexo
+\include{pos-textual/anexo}
+
+%%O Índice é opcional. 
+%%Obs.: Caso não tenha, basta colocar % na frente da próxima linha.
+\printindex
+
+%A Autorização para Reprodução é obrigatória.
+\exibirautorizacao
+\end{document}
