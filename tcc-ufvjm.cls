@@ -1238,10 +1238,10 @@ qualquer meio convencional ou eletr\^onico, desde que citada a fonte.
  \fbox{
    \begin{tabular}{p{12.0cm}}
        \@sobrenomeautorum, \@nomeautorum\if@exibirautordois; \@sobrenomeautordois, \@nomeautordois\fi
-       \if@exibirautordois ; \@sobrenomeautortres, \@nomeautortres\fi
-       \if@exibirautordois ; \@sobrenomeautorquatro, \@nomeautorquatro\fi
-       \if@exibirautordois ; \@sobrenomeautorcinco, \@nomeautorcinco\fi
-       \if@exibirautordois ; \@sobrenomeautorseis, \@nomeautorseis\fi . \\
+       \if@exibirautortres ; \@sobrenomeautortres, \@nomeautortres\fi
+       \if@exibirautorquatro ; \@sobrenomeautorquatro, \@nomeautorquatro\fi
+       \if@exibirautorcinco ; \@sobrenomeautorcinco, \@nomeautorcinco\fi
+       \if@exibirautorseis ; \@sobrenomeautorseis, \@nomeautorseis\fi . \\
        \@titulo\ \ifsb@t \@subtitulo\ \fi / 
        \@autorum\if@exibirautordois ; \@autordois\fi
        \if@exibirautortres ; \@autortres\fi
