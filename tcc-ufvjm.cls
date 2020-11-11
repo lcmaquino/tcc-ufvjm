@@ -1,4 +1,4 @@
-%% TCC-UFVJM.CLS, v-1.0 luiz.aquino
+%% TCC-UFVJM.CLS, v-1.1 luiz.aquino
 %%
 %%
 %%   Licence: LPPL (LaTeX Project Public License)
@@ -19,13 +19,21 @@
 %%
 %%   Esta classe foi desenvolvida por Prof. Luiz Cláudio Mesquita de Aquino,
 %%   Se você tiver críticas, sugestões ou correções, por favor entrar em contato
-%%   no endereço contato@professoraquino.com.br.
+%%   no endereço luiz.aquino@ufvjm.edu.br.
 %%   
 %%   Esta classe foi obtida modificando a classe "monografia.cls" do Prof. Maxwell Mariano de Barros, 
 %%   do DEMAT/UFMA (http://www.demat.ufma.br). Vide: http://www.demat.ufma.br/monografia.php.
 %%
-%%   Author (class): Luiz Cláudio Mesquita de Aquino.
-%%        defining commands:
+%%   Author (class):
+%%     - Prof. Luiz Cláudio Mesquita de Aquino <luiz.aquino@ufvjm.edu.br>
+%%
+%%   Contributors:
+%%     - Jaime Batista de Souza <jaime.bs@ufvjm.edu.br>
+%%     - Prof. Weversson Dalmaso Sellin <weversson.sellin@ufvjm.edu.br>
+%%	 	
+%%       Defining commands:
+%%       \fundodacapa
+%%       \inserirpaginacomfundo
 %%       \instituicao
 %%       \sigla
 %%       \instituicaoendereco
@@ -120,9 +128,11 @@
 %%   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %%   Right brace   \}     Tilde         \~}
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
-\ProvidesClass{tcc-ufvjm}
-              [2001/04/21 v1.4e
- Standard LaTeX document class]
+\ProvidesClass{tcc-ufvjm}[2020/11/10 Modelo de TCC da UFVJM]
+
+%%Este pacote é necessário para utilizar os
+%%comandos \fundodacapa e \inserirpaginacomfundo.
+\RequirePackage{eso-pic}
 
 %%Sempre faz a indentação (o recuo) do primeiro parágrafo de um capítulo/seção.
 \let\@afterindentfalse\@afterindenttrue
@@ -134,11 +144,14 @@
 %%Obs.: * Nas listas de tabelas e figuras, aparece o rótulo "Tabela" e "Figura" antes da numeração.
 %%      * Para mudar isso, troque o primeiro "fnum@#1" a seguir por "the#". Se fizer essa troca, 
 %%        altere também o valor de 5em na linha com o comando "\l@figure{\@dottedtocline{1}{1.5em}{5em}}".
-\long\def\@caption#1[#2]#3{\par\addcontentsline{\csname ext@#1\endcsname}{#1}{%
-   \protect\numberline{\csname fnum@#1\endcsname}{\ignorespaces #2}}
-   \begingroup \@parboxrestore \footnotesize\setstretch{1}
-        \@makecaption{\csname fnum@#1\endcsname}{\ignorespaces #3}\par
-   \endgroup}
+\long\def\@caption#1[#2]#3{
+  \par\addcontentsline{\csname ext@#1\endcsname}{#1}{%
+    \protect\numberline{\csname fnum@#1\endcsname}{\ignorespaces #2}
+  }
+  \begingroup \@parboxrestore \footnotesize\setstretch{1}
+    \@makecaption{\csname fnum@#1\endcsname}{\ignorespaces #3}\par
+  \endgroup
+}
 
 \newcommand\@ptsize{}
 \newif\if@restonecol
@@ -146,73 +159,88 @@
 \@titlepagetrue
 
 \newif\if@openright
-\if@compatibility\else
-\DeclareOption{a4paper}
-   {\setlength\paperheight {297mm}%
-    \setlength\paperwidth  {210mm}}
-\DeclareOption{a5paper}
-   {\setlength\paperheight {210mm}%
-    \setlength\paperwidth  {148mm}}
-\DeclareOption{b5paper}
-   {\setlength\paperheight {250mm}%
-    \setlength\paperwidth  {176mm}}
-\DeclareOption{letterpaper}
-   {\setlength\paperheight {11in}%
-    \setlength\paperwidth  {8.5in}}
-\DeclareOption{legalpaper}
-   {\setlength\paperheight {14in}%
-    \setlength\paperwidth  {8.5in}}
-\DeclareOption{executivepaper}
-   {\setlength\paperheight {10.5in}%
-    \setlength\paperwidth  {7.25in}}
-\DeclareOption{landscape}
-   {\setlength\@tempdima   {\paperheight}%
-    \setlength\paperheight {\paperwidth}%
-    \setlength\paperwidth  {\@tempdima}}
+
+\if@compatibility
+\else
+  \DeclareOption{a4paper}
+     {\setlength\paperheight {297mm}%
+      \setlength\paperwidth  {210mm}}
+  \DeclareOption{a5paper}
+     {\setlength\paperheight {210mm}%
+      \setlength\paperwidth  {148mm}}
+  \DeclareOption{b5paper}
+     {\setlength\paperheight {250mm}%
+      \setlength\paperwidth  {176mm}}
+  \DeclareOption{letterpaper}
+     {\setlength\paperheight {11in}%
+      \setlength\paperwidth  {8.5in}}
+  \DeclareOption{legalpaper}
+     {\setlength\paperheight {14in}%
+      \setlength\paperwidth  {8.5in}}
+  \DeclareOption{executivepaper}
+     {\setlength\paperheight {10.5in}%
+      \setlength\paperwidth  {7.25in}}
+  \DeclareOption{landscape}
+     {\setlength\@tempdima   {\paperheight}%
+      \setlength\paperheight {\paperwidth}%
+      \setlength\paperwidth  {\@tempdima}}
 \fi
+
 \if@compatibility
   \renewcommand\@ptsize{0}
 \else
-\DeclareOption{10pt}{\renewcommand\@ptsize{0}}
+  \DeclareOption{10pt}{\renewcommand\@ptsize{0}}
 \fi
+
 \DeclareOption{11pt}{\renewcommand\@ptsize{1}}
 \DeclareOption{12pt}{\renewcommand\@ptsize{2}}
-\if@compatibility\else
-\DeclareOption{oneside}{\@twosidefalse \@mparswitchfalse}
-\fi
-\DeclareOption{twoside}{\@twosidetrue  \@mparswitchtrue}
-\DeclareOption{draft}{\setlength\overfullrule{5pt}}
-\if@compatibility\else
-\DeclareOption{final}{\setlength\overfullrule{0pt}}
-\fi
-\DeclareOption{titlepage}{\@titlepagetrue}
-\if@compatibility\else
-\DeclareOption{notitlepage}{\@titlepagefalse}
-\fi
+
 \if@compatibility
 \else
-\DeclareOption{openright}{\@openrighttrue}
-\DeclareOption{openany}{\@openrightfalse}
+  \DeclareOption{oneside}{\@twosidefalse \@mparswitchfalse}
 \fi
+
+\DeclareOption{twoside}{\@twosidetrue  \@mparswitchtrue}
+\DeclareOption{draft}{\setlength\overfullrule{5pt}}
+
+\if@compatibility
+\else
+  \DeclareOption{final}{\setlength\overfullrule{0pt}}
+\fi
+
+\DeclareOption{titlepage}{\@titlepagetrue}
+
+\if@compatibility
+\else
+  \DeclareOption{notitlepage}{\@titlepagefalse}
+\fi
+
+\if@compatibility
+\else
+  \DeclareOption{openright}{\@openrighttrue}
+  \DeclareOption{openany}{\@openrightfalse}
+\fi
+
 \if@compatibility\else
-\DeclareOption{onecolumn}{\@twocolumnfalse}
+  \DeclareOption{onecolumn}{\@twocolumnfalse}
 \fi
+
 \DeclareOption{twocolumn}{\@twocolumntrue}
 \DeclareOption{leqno}{\input{leqno.clo}}
 \DeclareOption{fleqn}{\input{fleqn.clo}}
 \DeclareOption{openbib}{%
   \AtEndOfPackage{%
-   \renewcommand\@openbib@code{%
+    \renewcommand\@openbib@code{%
       \advance\leftmargin\bibindent
       \itemindent -\bibindent
       \listparindent \itemindent
       \parsep \z@
-      }%
-   \renewcommand\newblock{\par}}%
+    }%
+   \renewcommand\newblock{\par}
+   }%
 }
 
-\newif\if@capitulomaiusculo
-\@capitulomaiusculofalse
+\newif\if@capitulomaiusculo \@capitulomaiusculofalse
 \DeclareOption{capitulomaiusculo}{\@capitulomaiusculotrue}
 
 %%Configuração Padrão
@@ -247,6 +275,8 @@
 \renewcommand\dblfloatpagefraction{.5}
 
 %%Novas Definições
+\def\fundodacapa#1{\gdef\@fundodacapa{#1}\@inserirfundodacapatrue}
+%
 \def\titulo#1{\gdef\@titulo{#1}}
 \def\subtitulo#1{\gdef\@subtitulo{#1}\sb@ttrue} 
 %
@@ -322,54 +352,65 @@
 \def\unidadeacademica#1{\gdef\@unidadeacademica{#1}}
 \def\setcurso{Curso de \@curso}
 \def\@assinatura#1#2#3{
-    \rule{10.0cm}{0.1mm} \\
-    {#1 #2 -- #3}\\
-    \vfill
+  \rule{10.0cm}{0.1mm} \\
+  {#1 #2 -- #3}\\
+  \vfill
 }
 
 \def\exibirautorizacao{
-\chapter*{AUTORIZA\c C\~AO}
-\thispagestyle{empty}
-Autorizo a reprodu\c c\~ao e/ou divulga\c c\~ao total ou parcial do presente trabalho, por
-qualquer meio convencional ou eletr\^onico, desde que citada a fonte.
-\par\par
-\@cidade, \rule{0.8cm}{0.01cm} / \rule{0.8cm}{0.01cm} / \rule{1.6cm}{0.01cm}.
-\par
-\begin{center}
-\rule{10.0cm}{0.1mm}\par
-\@autorum\par
-\@emailautorum\par
-\if@exibirautordois
-\rule{10.0cm}{0.1mm}\par
-\@autordois\par
-\@emailautordois\par
-\fi
-\if@exibirautortres
-\rule{10.0cm}{0.1mm}\par
-\@autortres\par
-\@emailautortres\par
-\fi
-\if@exibirautorquatro
-\rule{10.0cm}{0.1mm}\par
-\@autorquatro\par
-\@emailautorquatro\par
-\fi
-\if@exibirautorcinco
-\rule{10.0cm}{0.1mm}\par
-\@autorcinco\par
-\@emailautorcinco\par
-\fi
-\if@exibirautorseis
-\rule{10.0cm}{0.1mm}\par
-\@autorseis\par
-\@emailautorseis\par
-\fi
-\@instituicao\par
-\@instituicaoendereco
+  \chapter*{AUTORIZA\c C\~AO}
+  \thispagestyle{empty}
+  Autorizo a reprodu\c c\~ao e/ou divulga\c c\~ao total ou parcial do presente trabalho, por
+  qualquer meio convencional ou eletr\^onico, desde que citada a fonte.
+  \par\par
+  \@cidade, \rule{0.8cm}{0.01cm} / \rule{0.8cm}{0.01cm} / \rule{1.6cm}{0.01cm}.
+  \par
+  \begin{center}
+    \rule{10.0cm}{0.1mm}\par
+    \@autorum\par
+    \@emailautorum\par
+    \if@exibirautordois
+      \rule{10.0cm}{0.1mm}\par
+      \@autordois\par
+      \@emailautordois\par
+    \fi
+    \if@exibirautortres
+      \rule{10.0cm}{0.1mm}\par
+      \@autortres\par
+      \@emailautortres\par
+    \fi
+    \if@exibirautorquatro
+      \rule{10.0cm}{0.1mm}\par
+      \@autorquatro\par
+      \@emailautorquatro\par
+    \fi
+    \if@exibirautorcinco
+      \rule{10.0cm}{0.1mm}\par
+      \@autorcinco\par
+      \@emailautorcinco\par
+    \fi
+    \if@exibirautorseis
+      \rule{10.0cm}{0.1mm}\par
+      \@autorseis\par
+      \@emailautorseis\par
+    \fi
+  \@instituicao\par
+  \@instituicaoendereco
 \end{center}
 }
 
+\def\inserirpaginacomfundo#1{
+  \clearpage
+  \thispagestyle{empty}
+  \hfill
+  \AddToShipoutPictureBG*{
+    \includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{#1}
+  }
+  \hfill
+}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newif\if@inserirfundodacapa \@inserirfundodacapafalse
 \newif\if@exibirautordois    \@exibirautordoisfalse
 \newif\if@exibirautortres    \@exibirautortresfalse
 \newif\if@exibirautorquatro  \@exibirautorquatrofalse
@@ -481,8 +522,8 @@ qualquer meio convencional ou eletr\^onico, desde que citada a fonte.
   \vskip 1.5em}
 \fi
 \parindent=1.25cm
-\topmargin-0.5cm
-\voffset-0.5cm
+\topmargin0cm
+\voffset0cm
 \footskip1cm
 \oddsidemargin0.5cm
 \evensidemargin0cm
@@ -521,7 +562,8 @@ qualquer meio convencional ou eletr\^onico, desde que citada a fonte.
     \@tempswafalse
   \fi
   \null\vfil
-  \secdef\@part\@spart}
+  \secdef\@part\@spart
+}
 
 \def\@part[#1]#2{%
     \ifnum \c@secnumdepth >-2\relax
@@ -530,87 +572,104 @@ qualquer meio convencional ou eletr\^onico, desde que citada a fonte.
     \else
       \addcontentsline{toc}{part}{#1}%
     \fi
-    \markboth{}{}%
-    {\centering
-     \interlinepenalty \@M
-     \normalfont
-     \ifnum \c@secnumdepth >-2\relax
-       \huge\bfseries \partname\nobreakspace\thepart
-       \par
-       \vskip 20\p@
-     \fi
-     \LARGE \bfseries #2\par}%
-    \@endpart}
-\def\@spart#1{%
-    {\centering
-     \interlinepenalty \@M
-     \normalfont
-     \LARGE \bfseries #1\par}%
-    \@endpart}
-\def\@endpart{\vfil\newpage
-              \if@twoside
-               \if@openright
-                \null
-                \thispagestyle{empty}%
-                \newpage
-               \fi
-              \fi
-              \if@tempswa
-                \twocolumn
-              \fi}
-\newcommand\chapter{\if@openright\cleardoublepage\else\clearpage\fi
-                    \global\@topnum\z@
-                    \@afterindentfalse
-                    \secdef\@chapter\@schapter}
+    \markboth{}{}{
+      \centering
+      \interlinepenalty \@M
+      \normalfont
+      \ifnum \c@secnumdepth >-2\relax
+        \huge\bfseries \partname\nobreakspace\thepart
+        \par
+        \vskip 20\p@
+      \fi
+      \LARGE \bfseries #2\par
+      }%
+     \@endpart
+}
+\def\@spart#1{{
+    \centering
+    \interlinepenalty \@M
+    \normalfont
+    \LARGE \bfseries #1\par
+  }%
+  \@endpart
+}
+\def\@endpart{
+  \vfil\newpage
+  \if@twoside
+    \if@openright
+      \null
+      \thispagestyle{empty}%
+      \newpage
+    \fi
+  \fi
+  \if@tempswa
+    \twocolumn
+  \fi
+}
+\newcommand\chapter{
+  \if@openright
+    \cleardoublepage
+  \else
+    \clearpage
+  \fi
+  \global\@topnum\z@
+  \@afterindentfalse
+  \secdef\@chapter\@schapter
+}
 
 \def\@capituloformato{\thechapter\space}
 
 \def\@chapter[#1]#2{
-                    \if@capitulomaiusculo
-                       \def\@titulocurto{\MakeUppercase{#1}}
-                       \def\@titulolongo{\MakeUppercase{#2}}
-                    \else
-                       \def\@titulocurto{#1}
-                       \def\@titulolongo{#2}
-                    \fi
-                    \ifnum \c@secnumdepth >\m@ne
-                         \refstepcounter{chapter}%
-                         \typeout{\@chapapp\space\thechapter.}%
-                    \fi
-                    \addcontentsline{toc}{chapter}{\@capituloformato\@titulocurto}%
-                    \chaptermark{\@titulocurto}%
-                    \addtocontents{lof}{\protect\addvspace{10\p@}}%
-                    \addtocontents{lot}{\protect\addvspace{10\p@}}%
-                    \if@twocolumn
-                      \@topnewpage[\@makechapterhead{\@titulolongo}]%
-                    \else
-                      \@makechapterhead{\@titulolongo}%
-                      \@afterheading
-                    \fi}
-\def\@makechapterhead#1{%
-    {\parindent \z@ \raggedright \normalfont
-    \ifnum \c@secnumdepth >\m@ne
-        \bfseries
-        \@capituloformato
-    \fi
-    \bfseries #1\par\nobreak
-  }}
+  \if@capitulomaiusculo
+    \def\@titulocurto{\MakeUppercase{#1}}
+    \def\@titulolongo{\MakeUppercase{#2}}
+  \else
+    \def\@titulocurto{#1}
+    \def\@titulolongo{#2}
+  \fi
+  \ifnum \c@secnumdepth >\m@ne
+    \refstepcounter{chapter}%
+    \typeout{\@chapapp\space\thechapter.}%
+  \fi
+  \addcontentsline{toc}{chapter}{\@capituloformato\@titulocurto}%
+  \chaptermark{\@titulocurto}%
+  \addtocontents{lof}{\protect\addvspace{10\p@}}%
+  \addtocontents{lot}{\protect\addvspace{10\p@}}%
+  \if@twocolumn
+    \@topnewpage[\@makechapterhead{\@titulolongo}]%
+    \else
+      \@makechapterhead{\@titulolongo}%
+      \@afterheading
+  \fi
+}
+
+\def\@makechapterhead#1{{
+  \parindent \z@ \raggedright \normalfont
+  \ifnum \c@secnumdepth >\m@ne
+    \bfseries
+    \@capituloformato
+  \fi
+  \bfseries #1\par\nobreak
+  }
+}
 
 %FAZER: colocar título em maíusculo quando @capitulomaiusculotrue. 
 %       Substituir #1 por MakeUppercase{#1} não está funcionando. Descobrir porque.
 \def\@schapter#1{
-                 \if@twocolumn
-                   \@topnewpage[\@makeschapterhead{#1}]%
-                 \else
-                   \@makeschapterhead{#1}%
-                   \@afterheading
-                 \fi}
+  \if@twocolumn
+    \@topnewpage[\@makeschapterhead{#1}]%
+  \else
+    \@makeschapterhead{#1}%
+    \@afterheading
+  \fi
+}
 
-\def\@makeschapterhead#1{%
-  {\parindent \z@ \raggedright \normalfont
-    \interlinepenalty\@M
-   \begin{center}\bfseries  #1\par\nobreak\end{center}
-  }}
+\def\@makeschapterhead#1{{
+  \parindent \z@ \raggedright \normalfont
+  \interlinepenalty\@M
+  \begin{center}\bfseries  #1\par\nobreak\end{center}
+  }
+}
 
 %Fixar um espaço de carácter entre o número da (sub)seção e seu título.
 \renewcommand*{\@seccntformat}[1]{\csname the#1\endcsname\space}
@@ -680,26 +739,26 @@ qualquer meio convencional ou eletr\^onico, desde que citada a fonte.
                                 \normalfont\bfseries #1}
 \if@titlepage
   \newenvironment{abstract}{%
-      \titlepage
-      \null\vfil
-      \@beginparpenalty\@lowpenalty
-      \begin{center}%
-        \bfseries \abstractname
-        \@endparpenalty\@M
-      \end{center}}%
-     {\par\vfil\null\endtitlepage}
+    \titlepage
+    \null\vfil
+    \@beginparpenalty\@lowpenalty
+    \begin{center}%
+      \bfseries \abstractname
+      \@endparpenalty\@M
+    \end{center}}%
+    {\par\vfil\null\endtitlepage}
 \else
   \newenvironment{abstract}{%
-      \if@twocolumn
-        \section*{\abstractname}%
-      \else
-        \small
-        \begin{center}%
-          {\bfseries \abstractname\vspace{-.5em}\vspace{\z@}}%
-        \end{center}%
-        \quotation
-      \fi}
-      {\if@twocolumn\else\endquotation\fi}
+  \if@twocolumn
+    \section*{\abstractname}%
+  \else
+    \small
+    \begin{center}%
+      {\bfseries \abstractname\vspace{-.5em}\vspace{\z@}}%
+    \end{center}%
+    \quotation
+  \fi}
+{\if@twocolumn\else\endquotation\fi}
 \fi
 
 \newenvironment{agradecimento}
@@ -788,34 +847,31 @@ qualquer meio convencional ou eletr\^onico, desde que citada a fonte.
   {\end{minipage}\end{flushright}}
 
 \if@compatibility
-\newenvironment{titlepage}
-    {
-      \if@twocolumn
-        \@restonecoltrue\onecolumn
-      \else
-        \@restonecolfalse\newpage
-      \fi
-      \thispagestyle{empty}
-      \setcounter{page}\z@
-    }
-    {\if@restonecol\twocolumn \else \newpage \fi
-    }
+\newenvironment{titlepage}{
+  \if@twocolumn
+    \@restonecoltrue\onecolumn
+  \else
+    \@restonecolfalse\newpage
+  \fi
+  \thispagestyle{empty}
+  \setcounter{page}\z@
+  }
+  {\if@restonecol\twocolumn \else \newpage \fi}
 \else
-\newenvironment{titlepage}
-    {
-      \if@twocolumn
-        \@restonecoltrue\onecolumn
-      \else
-        \@restonecolfalse\newpage
-      \fi
-      \thispagestyle{empty}
+  \newenvironment{titlepage}{
+    \if@twocolumn
+      \@restonecoltrue\onecolumn
+    \else
+      \@restonecolfalse\newpage
+    \fi
+    \thispagestyle{empty}
+    \setcounter{page}\@ne
+  }{
+    \if@restonecol\twocolumn \else \newpage \fi
+    \if@twoside\else
       \setcounter{page}\@ne
-    }
-    {\if@restonecol\twocolumn \else \newpage \fi
-     \if@twoside\else
-        \setcounter{page}\@ne
-     \fi
-    }
+    \fi
+  }
 \fi
 
 \newcommand\iniciarapendice{
@@ -861,7 +917,7 @@ qualquer meio convencional ou eletr\^onico, desde que citada a fonte.
   {\ifnum \c@chapter>\z@ \thechapter.\fi \@arabic\c@equation}
 \newcounter{figure}[chapter]
 \renewcommand \thefigure
-     {\ifnum \c@chapter>\z@ \thechapter.\fi \@arabic\c@figure}
+  {\ifnum \c@chapter>\z@ \thechapter.\fi \@arabic\c@figure}
 \def\fps@figure{tbp}
 \def\ftype@figure{1}
 \def\ext@figure{lof}
@@ -902,7 +958,8 @@ qualquer meio convencional ou eletr\^onico, desde que citada a fonte.
     \global \@minipagefalse
     \hb@xt@\hsize{\hfil\box\@tempboxa\hfil}
   \fi
-  \vskip\belowcaptionskip}
+  \vskip\belowcaptionskip
+}
 \DeclareOldFontCommand{\rm}{\normalfont\rmfamily}{\mathrm}
 \DeclareOldFontCommand{\sf}{\normalfont\sffamily}{\mathsf}
 \DeclareOldFontCommand{\tt}{\normalfont\ttfamily}{\mathtt}
@@ -918,13 +975,13 @@ qualquer meio convencional ou eletr\^onico, desde que citada a fonte.
 \setcounter{tocdepth}{3}
 
 \newcommand\tableofcontents{
-    \if@twocolumn
-      \@restonecoltrue\onecolumn
-    \else
-      \@restonecolfalse
-    \fi
-    \chapter*{\titulosumario
-        \@mkboth{\titulosumario}{\titulosumario}}
+  \if@twocolumn
+    \@restonecoltrue\onecolumn
+  \else
+    \@restonecolfalse
+  \fi
+  \chapter*{\titulosumario
+    \@mkboth{\titulosumario}{\titulosumario}}
 
     \@starttoc{toc}
     \if@restonecol\twocolumn\fi
@@ -934,7 +991,7 @@ qualquer meio convencional ou eletr\^onico, desde que citada a fonte.
 
     %Depois do Sumário, exibir em algarismos arábicos a numeração das páginas.
     \pagenumbering{arabic}
-    }
+}
 
 \newcommand*\l@part[2]{
   \ifnum \c@tocdepth >-2\relax
@@ -950,7 +1007,8 @@ qualquer meio convencional ou eletr\^onico, desde que citada a fonte.
          \global\@nobreaktrue
          \everypar{\global\@nobreakfalse\everypar{}}
     \endgroup
-  \fi}
+  \fi
+}
 
 %%Formato do comando \@dottedtocline:
 %%\@dottedtocline{<nível>}{<indentação>}{<largura do número>}{<título>}{<página>}
@@ -963,33 +1021,33 @@ qualquer meio convencional ou eletr\^onico, desde que citada a fonte.
 \newcommand*\l@subparagraph{\@dottedtocline{5}{2.5cm}{6em}}
 
 \newcommand\listoffigures{
-    \if@twocolumn
-      \@restonecoltrue\onecolumn
-    \else
-      \@restonecolfalse
-    \fi
-    \chapter*{\listadefigurastitulo}
-      %%Para exibir a Lista de Figuras no Sumário, retire o comentário da linha abaixo.
-      %\addcontentsline{toc}{chapter}{\listadefigurastitulo}
-      \@mkboth{\listadefigurastitulo}{\listadefigurastitulo}
+  \if@twocolumn
+    \@restonecoltrue\onecolumn
+  \else
+    \@restonecolfalse
+  \fi
+  \chapter*{\listadefigurastitulo}
+    %%Para exibir a Lista de Figuras no Sumário, retire o comentário da linha abaixo.
+    %\addcontentsline{toc}{chapter}{\listadefigurastitulo}
+    \@mkboth{\listadefigurastitulo}{\listadefigurastitulo}
     \@starttoc{lof}%
     \if@restonecol\twocolumn\fi
-    }
+}
 \newcommand*\l@figure{\@dottedtocline{1}{1.5em}{5em}}
 
 \newcommand\listoftables{
-    \if@twocolumn
-      \@restonecoltrue\onecolumn
-    \else
-      \@restonecolfalse
-    \fi
-    \chapter*{\listadetabelastitulo}
-    %%Para exibir a Lista de Tabelas no Sumário, retire o comentário da linha abaixo.
-    %\addcontentsline{toc}{chapter}{\listadetabelastitulo}
-      \@mkboth{\listadetabelastitulo}{\listadetabelastitulo}
-    \@starttoc{lot}
-    \if@restonecol\twocolumn\fi
-    }
+  \if@twocolumn
+    \@restonecoltrue\onecolumn
+  \else
+    \@restonecolfalse
+  \fi
+  \chapter*{\listadetabelastitulo}
+  %%Para exibir a Lista de Tabelas no Sumário, retire o comentário da linha abaixo.
+  %\addcontentsline{toc}{chapter}{\listadetabelastitulo}
+  \@mkboth{\listadetabelastitulo}{\listadetabelastitulo}
+  \@starttoc{lot}
+  \if@restonecol\twocolumn\fi
+}
 
 \let\sumario\tableofcontents
 \let\listadefiguras\listoffigures
@@ -998,45 +1056,52 @@ qualquer meio convencional ou eletr\^onico, desde que citada a fonte.
 \let\l@table\l@figure
 \newdimen\bibindent
 \setlength\bibindent{1.5em}
-\newenvironment{thebibliography}[1]
-     {\chapter*{\referenciatitulo}
-      \addcontentsline{toc}{chapter}{\referenciatitulo}
-      \@mkboth{\referenciatitulo}{\referenciatitulo}
-      \list{\@biblabel{\@arabic\c@enumiv}}
+\newenvironment{thebibliography}[1]{
+  \chapter*{\referenciatitulo}
+    \addcontentsline{toc}{chapter}{\referenciatitulo}
+    \@mkboth{\referenciatitulo}{\referenciatitulo}
+    \list{\@biblabel{\@arabic\c@enumiv}}
            {\settowidth\labelwidth{\@biblabel{#1}}
             \leftmargin\labelwidth
             \advance\leftmargin\labelsep
             \@openbib@code
             \usecounter{enumiv}
             \let\p@enumiv\@empty
-            \renewcommand\theenumiv{\@arabic\c@enumiv}}
-      \sloppy
-      \clubpenalty4000
-      \@clubpenalty \clubpenalty
-      \widowpenalty4000
-      \sfcode`\.\@m}
-     {\def\@noitemerr
-       {\@latex@warning{Empty `thebibliography' environment}}
-      \endlist}
+            \renewcommand\theenumiv{\@arabic\c@enumiv}
+    }
+    \sloppy
+    \clubpenalty4000
+    \@clubpenalty \clubpenalty
+    \widowpenalty4000
+    \sfcode`\.\@m}
+    {\def\@noitemerr
+       {\@latex@warning{Ambiente `thebibliography' est\'a vazio.}}
+      \endlist
+    }
 \newcommand\newblock{\hskip .11em\@plus.33em\@minus.07em}
 \let\@openbib@code\@empty
 
-\newenvironment{theindex}
-               {\if@twocolumn
-                  \@restonecolfalse
-                \else
-                  \@restonecoltrue
-                \fi
-                \columnseprule \z@
-                \columnsep 35\p@
-                \twocolumn[\@makeschapterhead{\indicetitulo}]
-                \@mkboth{\MakeUppercase\indicetitulo}
-                        {\MakeUppercase\indicetitulo}
-                \addcontentsline{toc}{chapter}{\indicetitulo}
-                \parindent\z@
-                \parskip\z@ \@plus .3\p@\relax
-                \let\item\@idxitem}
-               {\if@restonecol\onecolumn\else\clearpage\fi}
+\newenvironment{theindex}{
+  \if@twocolumn
+    \@restonecolfalse
+  \else
+    \@restonecoltrue
+  \fi
+  \columnseprule \z@
+  \columnsep 35\p@
+  \twocolumn[\@makeschapterhead{\indicetitulo}]
+  \@mkboth{\MakeUppercase\indicetitulo}{\MakeUppercase\indicetitulo}
+  \addcontentsline{toc}{chapter}{\indicetitulo}
+  \parindent\z@
+  \parskip\z@ \@plus .3\p@\relax
+  \let\item\@idxitem
+}{
+  \if@restonecol
+    \onecolumn
+  \else
+    \clearpage
+  \fi
+}
 \newcommand\@idxitem{\par\hangindent 40\p@}
 \newcommand\subitem{\@idxitem \hspace*{0.5cm}}
 \newcommand\subsubitem{\@idxitem \hspace*{1.0cm}}
@@ -1108,40 +1173,40 @@ qualquer meio convencional ou eletr\^onico, desde que citada a fonte.
   \onecolumn
 \fi
 
-  %%O padrão de estilo para todas as páginas será "plain".
-  \AtBeginDocument{\pagestyle{plain}}
+%%O padrão de estilo para todas as páginas será "plain".
+\AtBeginDocument{\pagestyle{plain}}
 
-  %%Redefinir o estilo de página "plain"
-  \renewcommand{\ps@plain}{
-    \renewcommand{\@oddhead}{}
-    \renewcommand{\@evenhead}{}
+%%Redefinir o estilo de página "plain"
+\renewcommand{\ps@plain}{
+  \renewcommand{\@oddhead}{}
+  \renewcommand{\@evenhead}{}
 
-    %%Número da página tem fonte com tamanho de aproximadamente 10 pt
-    %%quando o texto padrão tiver 12 pt.
-    \renewcommand{\@oddfoot}{\normalfont\footnotesize\hfil\thepage\hfil}
-    \renewcommand{\@evenfoot}{\@oddfoot}
-    %Para \chapter* mostrar o cabecalho
-    \let\@mkboth\markboth%
-    %Definindo a maneira como o comando o \chapter marca o cabecalho
-    \renewcommand{\chaptermark}[1]{
-      \markboth
-         {\ifnum \c@secnumdepth >\m@ne
+  %%Número da página tem fonte com tamanho de aproximadamente 10 pt
+  %%quando o texto padrão tiver 12 pt.
+  \renewcommand{\@oddfoot}{\normalfont\footnotesize\hfil\thepage\hfil}
+  \renewcommand{\@evenfoot}{\@oddfoot}
+  %Para \chapter* mostrar o cabecalho
+  \let\@mkboth\markboth%
+  %Definindo a maneira como o comando o \chapter marca o cabecalho
+  \renewcommand{\chaptermark}[1]{
+    \markboth{
+    \ifnum \c@secnumdepth >\m@ne
+      \thechapter\ \ 
+    \fi
+    ##1}{
+    \ifnum \c@secnumdepth >\m@ne
               \thechapter\ \ 
-          \fi
-          ##1}
-         {\ifnum \c@secnumdepth >\m@ne
-              \thechapter\ \ 
-          \fi
-          ##1}
-    }
+    \fi
+    ##1}
+	}
     \renewcommand{\sectionmark}[1]{
       \markright{
         \ifnum \c@secnumdepth >\z@
           \thesection\ 
         \fi
-        ##1}
+      ##1}
     }
-  } 
+} 
 
 %%Fixar espaço simples entre linhas para as notas de rodapé.
 \let\footnoteoriginal\footnote
@@ -1151,6 +1216,9 @@ qualquer meio convencional ou eletr\^onico, desde que citada a fonte.
   \clearpage
   \thispagestyle{empty}
   \lineskip .0em
+  \if@inserirfundodacapa
+    \AddToShipoutPictureBG*{\includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{\@fundodacapa}}
+  \fi
   \begin{center}
   \begin{tabular}{c}
   {\expandafter\MakeUppercase\expandafter{\@instituicao}}\\
@@ -1162,37 +1230,37 @@ qualquer meio convencional ou eletr\^onico, desde que citada a fonte.
   \vfill
   \begin{center}
   \ifsb@t 
-     {\expandafter\MakeUppercase\expandafter{\textbf{\@titulo}}\ }{\@subtitulo}
-    \else
-     {\expandafter\MakeUppercase\expandafter{\textbf{\@titulo}}}
+    {\expandafter\MakeUppercase\expandafter{\textbf{\@titulo}}\ }{\@subtitulo}
+  \else
+    {\expandafter\MakeUppercase\expandafter{\textbf{\@titulo}}}
   \fi
-     \vfill
-     \begin{flushright}
-        \textbf{\@autorum}\par
-        \if@exibirautordois\textbf{\@autordois}\par\fi
-        \if@exibirautortres\textbf{\@autortres}\par\fi
-        \if@exibirautorquatro\textbf{\@autorquatro}\par\fi
-        \if@exibirautorcinco\textbf{\@autorcinco}\par\fi
-        \if@exibirautorseis\textbf{\@autorseis}\par\fi
-     \end{flushright}
+    \vfill
+    \begin{flushright}
+      \textbf{\@autorum}\par
+      \if@exibirautordois\textbf{\@autordois}\par\fi
+      \if@exibirautortres\textbf{\@autortres}\par\fi
+      \if@exibirautorquatro\textbf{\@autorquatro}\par\fi
+      \if@exibirautorcinco\textbf{\@autorcinco}\par\fi
+      \if@exibirautorseis\textbf{\@autorseis}\par\fi
+    \end{flushright}
     \vfill
     \@cidade\par\@ano
   \end{center}
 }
 
 \newcommand*\@folhaderosto{
-    \clearpage
-    \thispagestyle{empty}
-    \begin{center}
+  \clearpage
+  \thispagestyle{empty}
+  \begin{center}
     {\expandafter\MakeUppercase\expandafter{\@instituicao}}\\
     {\expandafter\MakeUppercase\expandafter{\@unidadeacademica}}\\
-  \vfill
-  \ifsb@t 
-    {\expandafter\MakeUppercase\expandafter{\textbf{\@titulo}}\ }
-    {\@subtitulo}
-   \else
+    \vfill
+    \ifsb@t 
+      {\expandafter\MakeUppercase\expandafter{\textbf{\@titulo}}\ }
+      {\@subtitulo}
+    \else
     {\expandafter\MakeUppercase\expandafter{\textbf{\@titulo}}}
-  \fi
+    \fi
   \end{center}
   \vfill
   \begin{flushright}
@@ -1202,12 +1270,12 @@ qualquer meio convencional ou eletr\^onico, desde que citada a fonte.
     \if@exibirautorquatro\textbf{\@autorquatro}\par\fi
     \if@exibirautorcinco\textbf{\@autorcinco}\par\fi
     \if@exibirautorseis\textbf{\@autorseis}\par\fi
-     Orientador(a):\par
-     \textbf{\@orientador}\par
-     \if@coorient
+    Orientador(a):\par
+    \textbf{\@orientador}\par
+    \if@coorient
            Co-orientador(a):\par
            \textbf{\@coorientador}\par
-     \fi
+    \fi
   \end{flushright}
   \vfill
   \begin{comentario}
@@ -1215,46 +1283,46 @@ qualquer meio convencional ou eletr\^onico, desde que citada a fonte.
       de \@curso, como parte dos requisitos
       exigidos para a conclus\~ao do curso.
   \end{comentario}
- \vfill
- \begin{center}
-  \@cidade\par\@ano
- \end{center}
+  \vfill
+  \begin{center}
+    \@cidade\par\@ano
+  \end{center}
 }
 
 \newcommand{\errata}[1]{
- \@exibirerratatrue
- \def\@folhadeerrata{ 
-   \clearpage
-   \chapter*{\MakeUppercase{Errata}} #1
- } 
+  \@exibirerratatrue
+  \def\@folhadeerrata{ 
+    \clearpage
+    \chapter*{\MakeUppercase{Errata}} #1
+  }
 }
 
 \newcommand*\@fichacatalografica{
- \clearpage
- \setstretch{1}%Espaço simples entre linhas.
- \vfil\null
- \lineskip .0em
- \vfill
- \fbox{
-   \begin{tabular}{p{12.0cm}}
-       \@sobrenomeautorum, \@nomeautorum\if@exibirautordois; \@sobrenomeautordois, \@nomeautordois\fi
-       \if@exibirautortres ; \@sobrenomeautortres, \@nomeautortres\fi
-       \if@exibirautorquatro ; \@sobrenomeautorquatro, \@nomeautorquatro\fi
-       \if@exibirautorcinco ; \@sobrenomeautorcinco, \@nomeautorcinco\fi
-       \if@exibirautorseis ; \@sobrenomeautorseis, \@nomeautorseis\fi . \\
-       \@titulo\ \ifsb@t \@subtitulo\ \fi / 
-       \@autorum\if@exibirautordois ; \@autordois\fi
-       \if@exibirautortres ; \@autortres\fi
-       \if@exibirautorquatro ; \@autorquatro\fi
-       \if@exibirautorcinco ; \@autorcinco\fi
-       \if@exibirautorseis ; \@autorseis\fi
-       \ - \@ano .\\
-       \@npaginas .p                \\
-                                     \\
-       \@areas\ I. T\'itulo. \\
-       \hfill CDU \@CDU
+  \clearpage
+  \setstretch{1}%Espaço simples entre linhas.
+  \vfil\null
+  \lineskip .0em
+  \vfill
+  \fbox{
+    \begin{tabular}{p{12.0cm}}
+      \@sobrenomeautorum, \@nomeautorum\if@exibirautordois; \@sobrenomeautordois, \@nomeautordois\fi
+      \if@exibirautortres ; \@sobrenomeautortres, \@nomeautortres\fi
+      \if@exibirautorquatro ; \@sobrenomeautorquatro, \@nomeautorquatro\fi
+      \if@exibirautorcinco ; \@sobrenomeautorcinco, \@nomeautorcinco\fi
+      \if@exibirautorseis ; \@sobrenomeautorseis, \@nomeautorseis\fi . \\
+      \@titulo\ \ifsb@t \@subtitulo\ \fi / 
+      \@autorum\if@exibirautordois ; \@autordois\fi
+      \if@exibirautortres ; \@autortres\fi
+      \if@exibirautorquatro ; \@autorquatro\fi
+      \if@exibirautorcinco ; \@autorcinco\fi
+      \if@exibirautorseis ; \@autorseis\fi
+      \ - \@ano .\\
+      \@npaginas .p                \\
+                                   \\
+      \@areas\ I. T\'itulo. \\
+      \hfill CDU \@CDU
     \end{tabular}}
-   \setstretch{1.241}%Espaço de 1,5 entre linhas.
+  \setstretch{1.241}%Espaço de 1,5 entre linhas.
 }
 
 \newcommand*\@fichadeaprovacao{
@@ -1262,24 +1330,24 @@ qualquer meio convencional ou eletr\^onico, desde que citada a fonte.
   \lineskip .0em
     \begin{center}
     \ifsb@t 
-     {\bfseries\expandafter\MakeUppercase\expandafter{\@titulo}\ }
-     {\@subtitulo}
+      {\bfseries\expandafter\MakeUppercase\expandafter{\@titulo}\ }
+      {\@subtitulo}
     \else
-     {\expandafter\MakeUppercase\expandafter{\@titulo}}
-   \fi 
-  \vfill
-        \textbf{\@autorum}\par
-        \if@exibirautordois\textbf{\@autordois}\par\fi
-        \if@exibirautortres\textbf{\@autortres}\par\fi
-        \if@exibirautorquatro\textbf{\@autorquatro}\par\fi
-        \if@exibirautorcinco\textbf{\@autorcinco}\par\fi
-        \if@exibirautorseis\textbf{\@autorseis}\par\fi
-     Orientador(a):\\
-     {\bfseries  \@orientador \par}
-     \if@coorient
-           Co-orientador(a):\\
-           {\bfseries  \@coorientador \par}
-      \fi
+      {\expandafter\MakeUppercase\expandafter{\@titulo}}
+    \fi 
+    \vfill
+    \textbf{\@autorum}\par
+    \if@exibirautordois\textbf{\@autordois}\par\fi
+    \if@exibirautortres\textbf{\@autortres}\par\fi
+    \if@exibirautorquatro\textbf{\@autorquatro}\par\fi
+    \if@exibirautorcinco\textbf{\@autorcinco}\par\fi
+    \if@exibirautorseis\textbf{\@autorseis}\par\fi
+    Orientador(a):\\
+    {\bfseries  \@orientador \par}
+    \if@coorient
+      Co-orientador(a):\\
+      {\bfseries  \@coorientador \par}
+    \fi
   \vfill
   \end{center}
   \begin{comentario}
@@ -1289,10 +1357,10 @@ qualquer meio convencional ou eletr\^onico, desde que citada a fonte.
   \end{comentario}
   \vfill
   \begin{flushright}
-   APROVADO em \rule{0.8cm}{0.01cm} / \rule{0.8cm}{0.01cm} / \rule{1.6cm}{0.01cm}.
+     APROVADO em \rule{0.8cm}{0.01cm} / \rule{0.8cm}{0.01cm} / \rule{1.6cm}{0.01cm}.
   \end{flushright}
- \vfill
- \begin{center}
+  \vfill
+  \begin{center}
     \@assinatura{\@ttexaminadorum}{\@examinadorum}{\@instexaminadorum}
     \@assinatura{\@ttexaminadordois}{\@examinadordois}{\@instexaminadordois}
     \if@extres \@assinatura{\@ttexaminadortres}{\@examinadortres}{\@instexaminadortres} \fi
@@ -1301,7 +1369,6 @@ qualquer meio convencional ou eletr\^onico, desde que citada a fonte.
     \@assinatura{\@ttorientador}{\@orientador}{\@instorientador}
  \end{center}
 }
-
 \endinput
 %%
 %% End of file `tcc-ufvjm'.
