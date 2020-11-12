@@ -4,7 +4,7 @@ Este é um modelo em LaTeX para o TCC da UFVJM. Ele está de acordo com as regra
 
 # Download
 
-- [modelo-tcc-v1.1.zip](https://github.com/lcmaquino/tcc-ufvjm/releases/download/tcc-ufvjm-v1.1/tcc-ufvjm-v1.1.zip)
+- [modelo-tcc-v1.1.zip](https://github.com/lcmaquino/tcc-ufvjm/releases/download/v1.1/tcc-ufvjm-v1.1.zip)
 
 # Uso
 
